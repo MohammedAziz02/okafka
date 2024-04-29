@@ -11,34 +11,13 @@ shell: bash
 
 steps:
   - type: Command
-    name: "Run Gradle cyclonedxBom command"
+    name: "Install cdxgen"
     command: |
-      # For more details, visit https://github.com/CycloneDX/cyclonedx-gradle-plugin/blob/master/README.md
-      cat <<EOF >> init.gradle
-        initscript {
-          repositories {
-            maven {
-              url "https://plugins.gradle.org/m2/"
-            }
-          }
-          dependencies {
-            classpath "org.cyclonedx:cyclonedx-gradle-plugin:1.7.4"
-          }
-        }
-        allprojects{
-          apply plugin:org.cyclonedx.gradle.CycloneDxPlugin
-          cyclonedxBom {
-            includeConfigs = ["runtimeClasspath", "compileClasspath"]
-            skipConfigs = ["testCompileClasspath"]
-            projectType = "application"
-            destination = file(".")
-            outputName = "artifactSBOM"
-            outputFormat = "json"
-            schemaVersion = "1.4"
-          }
-        }
-      EOF
-      gradle --init-script init.gradle cyclonedxBom -info
+      npm install -g @cyclonedx/cdxgen
+  - type: Command
+    name: "Run cdxgen tool"
+    command: |
+      cdxgen -t gradle --spec-version=1.4 -o artifactSBOM.json
 outputArtifacts:
   - name: artifactSBOM
     type: BINARY
