@@ -8,6 +8,10 @@ version: 0.1
 component: build
 timeoutInSeconds: 1000
 shell: bash
+env:
+  variables:
+    GRADLE_ARGS_DEPENDENCIES: "--configuration runtimeClasspath"
+
 
 steps:
   - type: Command
@@ -17,7 +21,7 @@ steps:
   - type: Command
     name: "Run cdxgen tool"
     command: |
-      cdxgen -t gradle --spec-version=1.4 -o artifactSBOM.json
+      cdxgen -t gradle -o artifactSBOM.json --spec-version 1.4
 outputArtifacts:
   - name: artifactSBOM
     type: BINARY
