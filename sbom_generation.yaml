@@ -24,6 +24,10 @@ steps:
     command: |
       npm install -g @cyclonedx/cdxgen
   - type: Command
+    name: "Node version"
+    command: |
+      node -v
+  - type: Command
     name: "Java version"
     command: |
       java -version
